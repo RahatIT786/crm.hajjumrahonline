@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect API requests to Laravel backend
+    RewriteCond %{REQUEST_URI} ^/api/ [OR]
+    RewriteCond %{REQUEST_URI} ^/backend/
+    RewriteRule ^ backend/public/index.php [L]
+
+    # Allow Vue assets (JS, CSS, images) to load correctly
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Redirect everything else to Vue frontend
+    RewriteRule ^ frontend/dist/index.html [L]
+</IfModule>
+
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+</IfModule>
