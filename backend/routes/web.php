@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PackageController;
 
 use App\Http\Controllers\staff_management\RoleController;
@@ -29,10 +30,15 @@ Route::get('/api/get/pnrs',[PnrController::class,'getPnrs']);
 Route::get('/api/get/bookings',[PnrController::class,'getBookings']);
 Route::post('/api/bookings/{id}/update-status',[PnrController::class,'updateBookingStatus']);
 
-
+Route::post('/api/register',[AuthController::class,'register']);
+Route::post('/api/login',[AuthController::class,'login']);
 
 Route::get('/optimize' ,[PackageController::class,'clearCache']);
 Route::get('/migrate' ,[PackageController::class,'migrate']);
+
+Route::middleware('auth:api')->group(function(){
+    Route::get('/profile',[AuthController::class,'testProfile']);
+});
 
 
 Route::middleware('api.key')->post('/departure-city',
@@ -41,3 +47,26 @@ Route::middleware('api.key')->post('/departure-city',
 });
 
 
+/*
+====================================================[START]
+BELOW THE API FOR TESTING 💀
+-YOU CAN USE POSTMAN TO TEST
+-CAN GET CSRF TOKEN FROM /token 🔑
+-POST TO /posttest WITH CSRF TOKEN AND NAME
+-RESPONSE WILL BE JSON WITH NAME AND SUCCESS MESSAGE
+
+API DOCUMENTATION
+-EXAMPLE:{BODY:{"name":"ABU","_token":"YOUR_CSR"}}
+-EXAMPLE: {"name":"ABU","status":"success","message":"Keep rocking Happy Hacking 🐱‍💻"}
+
+                                -BY(ABU ♦)
+                                -ENJOY HACKING 🐱‍💻
+=============================================================
+*/
+Route::get('/token',function(){
+    return array('csrf'=>csrf_token());
+});
+Route::post('/posttest',function(Request $request){
+    return response()->json(['name' => $request->name,'status' => 'success','message' => 'Keep rocking Happy Hacking 🐱‍💻']);
+});
+//====================================================[END]

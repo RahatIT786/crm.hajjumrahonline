@@ -2,6 +2,12 @@
 
 return [
 
+    
+
+   
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -40,6 +46,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+        'driver' => 'jwt',
+        'provider' => 'crmusers',
+        ],
     ],
 
     /*
@@ -65,10 +76,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'crmusers'=>[
+            'driver'=>'eloquent',
+            'model'=>App\Models\Crmuser::class,
+        ],
     ],
 
     /*
@@ -111,5 +122,7 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+
+    
 
 ];
