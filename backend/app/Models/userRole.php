@@ -13,6 +13,6 @@ class userRole extends Model
 
 
     public function crmuser(){
-        return $this->hasMany(crmuser::class);
+        return $this->hasMany(Crmuser::class);
     }
 }

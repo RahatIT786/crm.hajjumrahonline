@@ -42,7 +42,9 @@ const InputBox = ({ type = 'text', placeholder = '', value, onChange, id, name, 
       id={id}                 
       name={name}             
       className={className}   
-      label={label}          
+      label={label}  
+      
+     
     />
   );
 };
