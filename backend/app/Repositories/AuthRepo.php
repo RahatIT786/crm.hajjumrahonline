@@ -17,7 +17,8 @@ class AuthRepo
 
     public function register($request){
 
-    $request['password'] = Hash::make($request['password']);
+    // $request['password'] = Hash::make($request['password']);
+    $request['password'] = bcrypt($request['password']);
      return  Crmuser::create($request->only('name','email','password','role_id'));
     }
 }

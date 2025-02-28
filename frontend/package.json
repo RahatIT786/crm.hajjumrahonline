@@ -20,6 +20,8 @@
     "draft-js": "^0.11.7",
     "jodit-react": "^5.2.14",
     "laravel-echo": "^2.0.0",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.2",
     "pusher-js": "^8.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

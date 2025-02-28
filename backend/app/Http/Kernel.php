@@ -15,16 +15,22 @@
 // ];
 
 protected $middlewareGroups = [
-    'web' => [
-        \App\Http\Middleware\VerifyCsrfToken::class, // ✅ Keep CSRF for web routes
-    ],
-    'api' => [
-        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // (only if using Sanctum)
-        'throttle:api',
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    // 'web' => [
+    //     \App\Http\Middleware\VerifyCsrfToken::class, // ✅ Keep CSRF for web routes
+    // ],
+    // 'api' => [
+    //     \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // (only if using Sanctum)
+    //     'throttle:api',
+    //     \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
-        \App\Http\Middleware\CorsMiddleware::class,
-    ],
+    //     \App\Http\Middleware\CorsMiddleware::class,
+    // ],
+    'api' => [
+    'throttle:api',
+    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    \App\Http\Middleware\CorsMiddleware::class,
+],
+
 ];
 
 
