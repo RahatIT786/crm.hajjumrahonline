@@ -33,8 +33,8 @@ Route::post('/api/bookings/{id}/update-status',[PnrController::class,'updateBook
 Route::post('/api/register',[AuthController::class,'register']);
 Route::post('/api/login',[AuthController::class,'login']);
 
-Route::get('/optimize' ,[PackageController::class,'clearCache']);
-Route::get('/migrate' ,[PackageController::class,'migrate']);
+Route::get('/api/optimize' ,[PackageController::class,'clearCache']);
+Route::get('/api/migrate' ,[PackageController::class,'migrate']);
 
 Route::middleware('auth:api')->group(function(){
     Route::get('/profile',[AuthController::class,'testProfile']);
