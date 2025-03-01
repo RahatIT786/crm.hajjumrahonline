@@ -23,6 +23,11 @@ import PnrFormPopup from '../pages/pnr_management/PnrFormPopup'
 import BookingList from '../pages/pnr_management/BookingList'
 import Login from '../auth/Login'
 import ProtectedRoute from '../auth/ProtectedRoute'
+import Company from '../pages/company_management/Company'
+import AddCompany from '../pages/company_management/AddCompany'
+import ViewCompany from '../pages/company_management/ViewCompany'
+import BankList from '../pages/company_management/BankList'
+import AddBankDetails from '../pages/company_management/AddBankDetails'
 const AppRoutes = () => {
   // const ProtectedRoute=({element})=>{
   //   const [isAuthenticated, setIsAuthenticated] =useState(false);
@@ -48,9 +53,9 @@ const AppRoutes = () => {
         <Routes>
             <Route path='/login' element={<Login/>} />
 
-            <Route  element={
+            {/* <Route  element={
                   <ProtectedRoute  />
-                  }> 
+                  }>  */}
                   <Route element={<AppLayout/>}>
                 <Route index element={<Home />} />
                 <Route path='/dashboard' element={<Home />} />
@@ -59,6 +64,12 @@ const AppRoutes = () => {
                 {/* Company Management Routes */}
                 <Route path="/company_management/branch" element={<Branches />}/>
                 <Route path="/company_management/branch-add" element={<BranchesForm />}/> 
+                <Route path='/company'  element={<Company/>} />
+                <Route path='/addcompany' element={<AddCompany/>}/>
+                <Route path='/editcompany/:index' element={<AddCompany/>}/>
+                <Route path='/company-details/:index' element={<ViewCompany/>}/>
+                <Route path='/list/banklist' element={<BankList/>}/>
+                <Route path='/add/bankdetails' element={<AddBankDetails/>}/>
 
 
                 {/* Staff Management Routes */}
@@ -76,7 +87,7 @@ const AppRoutes = () => {
                 <Route path="/pnr_management/pnr_form" element={<PnrFormPopup />} />
                 <Route path='/pnr_management/booking_list' element={<BookingList />} />
             </Route>
-            </Route>
+            {/* </Route> */}
               
 
                {/* ✅ Catch-all for unknown routes */}

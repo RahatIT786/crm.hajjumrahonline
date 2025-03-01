@@ -65,10 +65,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.post("/api/login", formData);
+      // await axios.get("/sanctum/csrf-cookie");
+      const { data } = await axios.post("/api/login", formData,{withCredentials:false});
       sessionStorage.setItem("token", data.token);
       console.log('✅ Your token is:', data.token);
+
+        // Set Authorization header for future requests
+    axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+
+
       navigate("/dashboard");
     } catch (error) {
       setMessage(error.response?.data?.message || "❌ Login Failed");
