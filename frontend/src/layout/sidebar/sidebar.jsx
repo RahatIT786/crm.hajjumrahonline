@@ -106,20 +106,20 @@ const Sidebar = () => { // <-- Change to uppercase 'Sidebar'
                 <div className="collapse show">
                   <ul className="nav nav-collapse">
                     <li>
-                      <Link to="/company_management/branch">
-                        <span className="sub-item">Branches</span>
+                      <Link to="/company">
+                        <span className="sub-item">Companies</span>
                       </Link>
                     </li>
                     <li>
-                      <a>
+                      <Link to={'/list/banklist'}>
                         <span className="sub-item">Bank Accounts</span>
-                      </a>
+                      </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <a>
                         <span className="sub-item">GST</span>
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               )}

@@ -2,7 +2,8 @@ import './App.css';
 import AppRoutes from './router/AppRoutes';
 import React,{useEffect} from 'react';
 import WebFont from 'webfontloader';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -43,6 +44,7 @@ function App() {
 
 
 
+    
 
 
   },[]);

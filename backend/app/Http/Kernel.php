@@ -28,8 +28,8 @@ protected $middlewareGroups = [
     'api' => [
     'throttle:api',
     \Illuminate\Routing\Middleware\SubstituteBindings::class,
-    \App\Http\Middleware\CorsMiddleware::class,
-],
+    // \App\Http\Middleware\CorsMiddleware::class,
+    ]
 
 ];
 

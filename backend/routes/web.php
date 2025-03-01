@@ -30,15 +30,15 @@ Route::get('/api/get/pnrs',[PnrController::class,'getPnrs']);
 Route::get('/api/get/bookings',[PnrController::class,'getBookings']);
 Route::post('/api/bookings/{id}/update-status',[PnrController::class,'updateBookingStatus']);
 
-Route::post('/api/register',[AuthController::class,'register']);
-Route::post('/api/login',[AuthController::class,'login']);
+// Route::post('/api/register',[AuthController::class,'register']);
+// Route::post('/api/login',[AuthController::class,'login']);
 
 Route::get('/optimize' ,[PackageController::class,'clearCache']);
 Route::get('/migrate' ,[PackageController::class,'migrate']);
 
-Route::middleware('auth:api')->group(function(){
-    Route::get('/profile',[AuthController::class,'testProfile']);
-});
+// Route::middleware('auth:api')->group(function(){
+//     Route::get('/profile',[AuthController::class,'testProfile']);
+// });
 
 
 Route::middleware('api.key')->post('/departure-city',
