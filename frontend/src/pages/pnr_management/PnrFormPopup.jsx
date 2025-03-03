@@ -7,7 +7,13 @@ import { data } from 'react-router';
 import dayjs from 'dayjs';
 import { useDispatch } from 'react-redux';
 import { addPnr } from '../../features/pnr/PnrSlice';
+
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 const PnrFormPopup = () => {
+
+    const navigate=useNavigate();
 
     const dispatch =useDispatch();
    
@@ -87,7 +93,20 @@ const PnrFormPopup = () => {
     // Handle form submission
     const handleSubmit = async(e) => {
         e.preventDefault();
-        dispatch(addPnr(formData));
+        const response= dispatch(addPnr(formData));
+        toast.success("PNR DETAILS ADDED SUCCESSFULLY",
+            {position:"top-right"});
+            setTimeout(()=>{
+                navigate("/pnr_management/pnr_list");
+            },3000);
+
+        // if(response?.payload?.success){
+        //     toast.success("PNR DETAILS ADDED SUCCESSFULLY",
+        //         {position:"top-right"});
+        //         setTimeout(()=>{
+        //             navigate("/pnr_management/pnr_list");
+        //         },3000);
+        // }
 
         setFormData({
             pnr_code: '',
@@ -118,6 +137,7 @@ const PnrFormPopup = () => {
         // Validate before submitting
         if (validateForm()) {
 
+          
             // Add your form submission logic here (e.g., send to server)
             console.log('Form submitted with data: ', formData);
         }
@@ -135,6 +155,7 @@ const PnrFormPopup = () => {
     return (
 
         <div className="container py-5">
+             <ToastContainer position="top-right" autoClose={2000} />
         <div className="page-inner">
             <div className="page-header d-flex justify-content-between mb-4">
                 {/* Add header content here */}
