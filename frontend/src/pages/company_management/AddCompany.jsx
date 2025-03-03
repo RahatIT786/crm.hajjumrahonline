@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import InputBox from "../../components/ui/InputBox"; // Assuming InputBox is a custom component
 import { ToastContainer,toast } from "react-toastify";
 import DatePickerInput from "../../components/ui/DatePickerInput"; // Assuming DatePickerInput is a custom component
@@ -7,44 +7,101 @@ import ButtonComponent from "../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+// --☑✅---SCHEMA-FORM-VALIDATION-START-------------------------------
+const schema=yup.object().shape({
+    companyName: yup.string().required("Company Name is Required").max(40,"Company Name must below 40 character "),
+    companyDisplayName: yup.string().required("Company Display Name is Required").max(40,"Company Display Name must below 40 character "),
+    contactPerson: yup.string().required("Contact Person is Required").max(30,"Name must below 30 character"),
+    mobileNumber: yup
+        .string()
+        .required("Mobile Number is required")
+        .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
+
+    email: yup.string().email("Invalid Email Format").required("Email is required").max(40,'Email must below 40 character'),
+    website: yup.string().url("Invalid URL format").optional(),
+    landlineNumber: yup.string().optional().max(20,"Landline number must below 20 digit"),
+    registeredAddress: yup.string().required("Address is required").max(60,'Address must below 60 character'),
+    aboutCompany : yup.string().optional().max(100,'About Company must below 100 character'),
+    country: yup.string().required("Country is required").max(20,"Country must below 20 character"),
+    state: yup.string().nullable().max(25,"State Name must be  25 character"),
+    city: yup.string().optional().max(20,'City Name must below 20 character'),
+    companyLogo: yup.mixed().test("FileSize","File size must be less than 2MB",(value)=>{
+        return !value || (value && value[0] ?.size <=2 *1024 *1024);
+    }),
+    
+
+});
+// ---✅---SCHEMA-FORM-VALIDATION-END--------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const AddCompany = () => {
+   
+    // yup register -s
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState:{errors},
+    }=useForm({
+        resolver:yupResolver(schema),
+        mode:"onChange",
+       
+    });
+     // yup register -e
 
     const navigate=useNavigate();
-    const [formData, setFormData] = useState({
-        companyName: "",
-        companyDisplayName: "",
-        contactPerson: "",
-        mobileNumber: "",
-        landlineNumber: "",
-        email: "",
-        website: "",
-        registeredAddress: "",
-        aboutCompany: "",
-        companyLogo: "",
-        country: "",
-        state: "",
-        city: ""
-    });
+    // const [formData, setFormData] = useState({
+    //     companyName: "",
+    //     companyDisplayName: "",
+    //     contactPerson: "",
+    //     mobileNumber: "",
+    //     landlineNumber: "",
+    //     email: "",
+    //     website: "",
+    //     registeredAddress: "",
+    //     aboutCompany: "",
+    //     companyLogo: "",
+    //     country: "",
+    //     state: "",
+    //     city: ""
+    // });
 
-    const [error, setError] = useState({});
+    // const [error, setError] = useState({});
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value,
+    //     });
+    // };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = async(data) => {
+        // e.preventDefault();
+        console.log(data); 
 
         
         // Validation and submission logic here
-        console.log(formData);
-        const companies = JSON.parse(localStorage.getItem("companies")) || [];
-        companies.push(formData);
-        localStorage.setItem("companies", JSON.stringify(companies));
+        // console.log(formData);
+        // const companies = JSON.parse(localStorage.getItem("companies")) || [];
+        // companies.push(formData);
+        // localStorage.setItem("companies", JSON.stringify(companies));
         
 
         toast.success("Company Details Added Successfully..!",{   position: "top-right", // Customize position if needed
@@ -71,30 +128,32 @@ const AddCompany = () => {
                                 <h3>Company Details</h3>
                             </div>
                             <div className="card-body p-5">
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit(onSubmit)}>
                                     {/* Company Name and Display Name */}
                                     <div className="row my-3">
                                         <div className="col-md-6 mt-2">
                                             <InputBox
+                                               
+                                                {...register('companyName')}
                                                 label="Company Name"
                                                 type="text"
                                                 name="companyName"
-                                                value={formData.companyName}
+                                               
                                                 placeholder="Enter Company Name"
-                                                onChange={handleInputChange}
+                                               
                                             />
-                                            <div className="invalid-feedback">{error.companyName}</div>
+                                            {errors.companyName && <p className="text-danger">{errors.companyName.message}</p>}   
+                                            {/* <div className="invalid-feedback">{errors.companyName?.message}</div> */}
                                         </div>
                                         <div className="col-md-6 mt-2">
                                             <InputBox
+                                                  {...register('companyDisplayName')}
                                                 label="Company Display Name"
                                                 type="text"
                                                 name="companyDisplayName"
-                                                value={formData.companyDisplayName}
                                                 placeholder="Enter Company Display Name"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.companyDisplayName}</div>
+                                            <div className="invalid-feedback">{errors.companyDisplayName?.message}</div>
                                         </div>
                                     </div>
 
@@ -102,25 +161,25 @@ const AddCompany = () => {
                                     <div className="row my-3">
                                         <div className="col-md-6 mt-2">
                                             <InputBox
+                                             {...register('contactPerson')}
                                                 label="Contact Person"
                                                 type="text"
                                                 name="contactPerson"
-                                                value={formData.contactPerson}
                                                 placeholder="Enter Contact Person"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.contactPerson}</div>
+                                          {errors.contactPerson && <p className="text-danger">{errors.contactPerson.message}</p>}   
                                         </div>
                                         <div className="col-md-6 mt-2">
                                             <InputBox
+                                                  {...register('mobileNumber')}
                                                 label="Mobile Number"
                                                 type="text"
                                                 name="mobileNumber"
-                                                value={formData.mobileNumber}
                                                 placeholder="Enter Mobile Number"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.mobileNumber}</div>
+                                            {errors.mobileNumber && <p className="text-danger">{errors.mobileNumber.message}</p>}   
+
+                                            <div className="invalid-feedback">{errors.mobileNumber?.message}</div>
                                         </div>
                                     </div>
 
@@ -128,36 +187,33 @@ const AddCompany = () => {
                                     <div className="row my-3">
                                         <div className="col-md-4 mt-2">
                                             <InputBox
+                                                  {...register('landlineNumber')}
                                                 label="Landline Number"
                                                 type="text"
                                                 name="landlineNumber"
-                                                value={formData.landlineNumber}
                                                 placeholder="Enter Landline Number"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.landlineNumber}</div>
+                                            {errors.landlineNumber && <p className="text-danger">{errors.landlineNumber.message}</p>}   
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
+                                                 {...register('email')}
                                                 label="Email"
                                                 type="email"
                                                 name="email"
-                                                value={formData.email}
                                                 placeholder="Enter Email"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.email}</div>
+                                            {errors.email && <p className="text-danger">{errors.email.message}</p>}   
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
+                                                 {...register('website')}
                                                 label="Website"
                                                 type="text"
                                                 name="website"
-                                                value={formData.website}
                                                 placeholder="Enter Website"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.website}</div>
+                                             {errors.website && <p className="text-danger">{errors.website.message}</p>}   
                                         </div>
                                     </div>
 
@@ -165,25 +221,24 @@ const AddCompany = () => {
                                     <div className="row my-3">
                                         <div className="col-md-6 mt-2">
                                             <InputBox
+                                                  {...register('registeredAddress')}
                                                 label="Registered Address"
                                                 type="text"
                                                 name="registeredAddress"
-                                                value={formData.registeredAddress}
                                                 placeholder="Enter Registered Address"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.registeredAddress}</div>
+                                            {errors.registeredAddress && <p className="text-danger">{errors.registeredAddress.message}</p>}   
                                         </div>
                                         <div className="col-md-6 mt-2">
                                             <InputBox
+                                              {...register('aboutCompany')}
+                                                
                                                 label="About Company"
                                                 type="text"
                                                 name="aboutCompany"
-                                                value={formData.aboutCompany}
                                                 placeholder="Enter About Company"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.aboutCompany}</div>
+                                            {errors.aboutCompany && <p className="text-danger">{errors.aboutCompany.message}</p>}   
                                         </div>
                                     </div>
 
@@ -193,36 +248,34 @@ const AddCompany = () => {
                                     <div className="row my-3">
                                         <div className="col-md-4 mt-2">
                                             <InputBox
+                                                 {...register('country')}
                                                 label="Country"
                                                 type="text"
                                                 name="country"
-                                                value={formData.country}
                                                 placeholder="Enter Country"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.country}</div>
+                                             {errors.country && <p className="text-danger">{errors.country.message}</p>}   
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
+                                                {...register('state')} 
+                                             
                                                 label="State"
                                                 type="text"
                                                 name="state"
-                                                value={formData.state}
                                                 placeholder="Enter State"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.state}</div>
+                                           {errors.state && <p className="text-danger">{errors.state.message}</p>}   
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
+                                                {...register('city')}
                                                 label="City"
                                                 type="text"
                                                 name="city"
-                                                value={formData.city}
                                                 placeholder="Enter City"
-                                                onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{error.city}</div>
+                                            {errors.city && <p className="text-danger">{errors.city.message}</p>}   
                                         </div>
                                     </div>
 
@@ -236,14 +289,15 @@ const AddCompany = () => {
                                                 onChange={handleInputChange}
                                             /> */}
                                             <label >Company Logo</label>
-                                            <input type="file"  className="form-control" accept="image/*"/>
-                                            <div className="invalid-feedback">{error.companyLogo}</div>
+                                            <input   {...register('companyLogo')}  type="file" name="companyLogo"  className="form-control" accept="image/*"/>
+                                            {errors.companyLogo && <p className="text-danger">{errors.companyLogo.message}</p>}   
                                         </div>
                                     </div>
 
                                     {/* Submit Button */}
                                     <div className="d-flex justify-content-end">
-                                        <ButtonComponent color="primary" label="SAVE COMPANY DETAILS" />
+                                        <ButtonComponent color="primary" label="SAVE COMPANY DETAILS" type="sumbit" />
+                                        {/* <button type="submit">submit</button> */}
                                     </div>
                                 </form>
                             </div>
