@@ -6,8 +6,8 @@ import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const Company = () => {
+  
   const navigate = useNavigate();
- 
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {

@@ -1,17 +1,17 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Password } from 'primereact/password';
 import InputBox from '../components/ui/InputBox';
+
 // 🎨 Background Image Changer Component
+
 const BackgroundChanger = ({ children }) => {
   const images = [
     "https://getwallpapers.com/wallpaper/full/8/9/c/150932.jpg",
     "https://getwallpapers.com/wallpaper/full/e/8/8/150915.jpg",
-    
     "https://getwallpapers.com/wallpaper/full/4/f/9/150836.jpg",
-    // "https://getwallpapers.com/wallpaper/full/7/6/2/150840.jpg"
+  //"https://getwallpapers.com/wallpaper/full/7/6/2/150840.jpg"
   ];
 
   const [bgImage, setBgImage] = useState(images[0]);

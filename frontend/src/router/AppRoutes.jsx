@@ -16,6 +16,9 @@ import PackageForm from '../pages/inventory_management/package_management/packag
 //Staff Management
 import Role from '../pages/staff_management/Role'
 import Department from '../pages/staff_management/Department'
+import StaffList from '../pages/staff_management/StaffList'
+import AddStaff from '../pages/staff_management/AddStaff'
+
 
 //PNR Management
 import PnrList from '../pages/pnr_management/PnrList'
@@ -74,8 +77,9 @@ const AppRoutes = () => {
 
                 {/* Staff Management Routes */}
                 <Route path='/staff_management/role' element={<Role/>} />
-                <Route path='/staff_management/department' element={<Department/>}/>
-
+                <Route path='/staff_management/department' element={<Department />}/>
+                <Route path='/staff_management/staff_list' element={<StaffList />}/>
+                <Route path='/staff_management/staff_add' element={<AddStaff />}/>
 
                 {/* Inventory Management */}
                 <Route path="/inventory_management/packages" element={<PackageComponent />} />
