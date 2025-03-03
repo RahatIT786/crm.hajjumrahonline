@@ -53,9 +53,9 @@ const AppRoutes = () => {
         <Routes>
             <Route path='/login' element={<Login/>} />
 
-            {/* <Route  element={
+            <Route  element={
                   <ProtectedRoute  />
-                  }>  */}
+                  }> 
                   <Route element={<AppLayout/>}>
                 <Route index element={<Home />} />
                 <Route path='/dashboard' element={<Home />} />
@@ -87,7 +87,7 @@ const AppRoutes = () => {
                 <Route path="/pnr_management/pnr_form" element={<PnrFormPopup />} />
                 <Route path='/pnr_management/booking_list' element={<BookingList />} />
             </Route>
-            {/* </Route> */}
+            </Route>
               
 
                {/* ✅ Catch-all for unknown routes */}

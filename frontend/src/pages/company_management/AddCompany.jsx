@@ -26,7 +26,7 @@ const AddCompany = () => {
         city: ""
     });
 
-    const [errors, setErrors] = useState({});
+    const [error, setError] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -39,6 +39,7 @@ const AddCompany = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        
         // Validation and submission logic here
         console.log(formData);
         const companies = JSON.parse(localStorage.getItem("companies")) || [];
@@ -82,7 +83,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Company Name"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.companyName}</div>
+                                            <div className="invalid-feedback">{error.companyName}</div>
                                         </div>
                                         <div className="col-md-6 mt-2">
                                             <InputBox
@@ -93,7 +94,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Company Display Name"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.companyDisplayName}</div>
+                                            <div className="invalid-feedback">{error.companyDisplayName}</div>
                                         </div>
                                     </div>
 
@@ -108,7 +109,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Contact Person"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.contactPerson}</div>
+                                            <div className="invalid-feedback">{error.contactPerson}</div>
                                         </div>
                                         <div className="col-md-6 mt-2">
                                             <InputBox
@@ -119,7 +120,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Mobile Number"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.mobileNumber}</div>
+                                            <div className="invalid-feedback">{error.mobileNumber}</div>
                                         </div>
                                     </div>
 
@@ -134,7 +135,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Landline Number"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.landlineNumber}</div>
+                                            <div className="invalid-feedback">{error.landlineNumber}</div>
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
@@ -145,7 +146,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Email"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.email}</div>
+                                            <div className="invalid-feedback">{error.email}</div>
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
@@ -156,7 +157,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Website"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.website}</div>
+                                            <div className="invalid-feedback">{error.website}</div>
                                         </div>
                                     </div>
 
@@ -171,7 +172,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Registered Address"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.registeredAddress}</div>
+                                            <div className="invalid-feedback">{error.registeredAddress}</div>
                                         </div>
                                         <div className="col-md-6 mt-2">
                                             <InputBox
@@ -182,7 +183,7 @@ const AddCompany = () => {
                                                 placeholder="Enter About Company"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.aboutCompany}</div>
+                                            <div className="invalid-feedback">{error.aboutCompany}</div>
                                         </div>
                                     </div>
 
@@ -199,7 +200,7 @@ const AddCompany = () => {
                                                 placeholder="Enter Country"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.country}</div>
+                                            <div className="invalid-feedback">{error.country}</div>
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
@@ -210,7 +211,7 @@ const AddCompany = () => {
                                                 placeholder="Enter State"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.state}</div>
+                                            <div className="invalid-feedback">{error.state}</div>
                                         </div>
                                         <div className="col-md-4 mt-2">
                                             <InputBox
@@ -221,7 +222,7 @@ const AddCompany = () => {
                                                 placeholder="Enter City"
                                                 onChange={handleInputChange}
                                             />
-                                            <div className="invalid-feedback">{errors.city}</div>
+                                            <div className="invalid-feedback">{error.city}</div>
                                         </div>
                                     </div>
 
@@ -236,7 +237,7 @@ const AddCompany = () => {
                                             /> */}
                                             <label >Company Logo</label>
                                             <input type="file"  className="form-control" accept="image/*"/>
-                                            <div className="invalid-feedback">{errors.companyLogo}</div>
+                                            <div className="invalid-feedback">{error.companyLogo}</div>
                                         </div>
                                     </div>
 
