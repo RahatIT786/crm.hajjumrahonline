@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 // DynamicInputField component definition
-const DynamicInputField = ({
+const DynamicInputField = React.forwardRef(
+({
   type = 'text',             
   placeholder = '',         
   value,                    
@@ -12,8 +13,9 @@ const DynamicInputField = ({
   id,                       
   name,                     
   className = '',           
-  label = 'Input Field',   
-}) => {
+  label = 'Input Field', 
+  ...rest
+},ref) => {
   return (
     <TextField
       type={type}              
@@ -25,14 +27,18 @@ const DynamicInputField = ({
       className={className}    
       label={label}            
       variant="outlined"       
-      fullWidth  
+      fullWidth 
+      inputRef={ref}
+      {...rest}
+      
      
     />
   );
-};
+}
+);
 
 // InputBox component definition
-const InputBox = ({ type = 'text', placeholder = '', value, onChange, id, name, className, label = 'Input Field' }) => {
+const InputBox = ({ type = 'text', placeholder = '', value, onChange, id, name, className, label = 'Input Field',ref,props }) => {
   return (
     <DynamicInputField
       type={type}             
@@ -43,6 +49,8 @@ const InputBox = ({ type = 'text', placeholder = '', value, onChange, id, name, 
       name={name}             
       className={className}   
       label={label}  
+      ref={ref}
+      {...props}
       
      
     />
