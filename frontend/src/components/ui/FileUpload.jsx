@@ -13,9 +13,11 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
+  color:"white",
 });
 
-const FileUpload = ({
+const FileUpload = React.forwardRef(
+ ({
   onChange,
   label = "Upload files",
   accept = "",
@@ -23,8 +25,9 @@ const FileUpload = ({
   width = "auto",
   height = "40px",
   register,
-  name,
-}) => {
+  name,  
+},ref) => {
+
   const handleFileChange = (event) => {
     const file = event.target.files; // ✅ Ensure a single file is selected
     if (file) {
@@ -44,6 +47,12 @@ const FileUpload = ({
         textTransform: "none",
         width: width,
         height: height,
+        color: "white !important", // Force white color
+        backgroundColor: "#1976d2", // Ensure proper contrast
+        "&:hover": {
+          backgroundColor: "green", // Slightly darker on hover
+          color: "white !important", // Ensure text stays white
+        },
       }}
     >
       {label}
@@ -53,10 +62,12 @@ const FileUpload = ({
         name={name}
         accept={accept}
         multiple={multiple}
+        ref={ref}
       />
     </Button>
   );
-};
+}
+);
 
 export default FileUpload;
 

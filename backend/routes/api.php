@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\company_management\CompanyManagementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\staff_management\StaffController;
@@ -20,6 +21,7 @@ Route::post('/login',[AuthController::class,'login']);
 
 Route::middleware('auth:api')->group(function(){
     Route::get('/profile',[AuthController::class,'testProfile']);
+
     Route::post('/staff',[StaffController::class, 'createStaff']);
 
     // Route::post('/staff',function(Request $request){
@@ -28,6 +30,14 @@ Route::middleware('auth:api')->group(function(){
     //          Staff::create($request->all());
     //         return response()->json(['name' => $request->firstName,'status' => 'success','message' => 'Keep rocking Happy Hacking 🐱‍💻','data' =>$request->all()]);
     //     });
+
+    Route::post('/addcompany',[CompanyManagementController::class,'createCompanyDetail']);
+    Route::post('/sample',function(){
+        return response()->json([
+            'message'=>"Company created succefully..!🙌🙌",
+        ]);
+    });
+
 });
 
 /*
