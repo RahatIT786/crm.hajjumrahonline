@@ -12,7 +12,7 @@ class RoleController extends Controller
 
     public function __construct(RoleService $roleService){
         $this->roleService=$roleService;
-    }
+    } 
 
 
 

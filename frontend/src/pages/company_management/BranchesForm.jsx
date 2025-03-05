@@ -89,7 +89,7 @@ const BranchesForm = () => {
             console.error('Error sending Data: ',error);
         }
 
-        alert("Branch details submitted successfully!");
+        //alert("Branch details submitted successfully!");
     };
 
     return (
