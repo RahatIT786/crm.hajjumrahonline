@@ -4,13 +4,17 @@ import React,{useEffect} from 'react';
 import WebFont from 'webfontloader';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from 'react-redux';
+import { fetchPnrs } from './features/pnr/PnrSlice';
+import { fetchCompanies } from './features/company_management/CompanyDetailSlice';
 
 
 
 
 function App() {
-
+  const dispatch =useDispatch();
   useEffect(()=>{
+   
 
     WebFont.load({
       google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -27,7 +31,7 @@ function App() {
         sessionStorage.fonts = true;
       },
     });
-
+   
 
     // Fix: Initialize window.Pusher and window.Echo
     
@@ -48,6 +52,12 @@ function App() {
 
 
   },[]);
+
+  useEffect(() => {
+    // Dispatch the actions to fetch data when the app first loads
+    dispatch(fetchPnrs());
+    // dispatch(fetchCompanies());
+  }, [dispatch]);
 
   return (
   

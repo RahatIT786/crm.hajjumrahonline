@@ -17,9 +17,17 @@ class CompanyDetailService
      $this->companyDetailRepo=$companyDetailRepo;
     }
 
-    public function create($companyDetail){
+    public function create(array $companyDetail){
         return $this->companyDetailRepo->create($companyDetail);
        
 
+    }
+
+    public function checkMailExist($email){
+       return $this->companyDetailRepo->checkMailExist($email);
+    }
+
+    public function getAllCompanyDetails(){
+        return $this->companyDetailRepo->getAllCompanyDetail();
     }
 }

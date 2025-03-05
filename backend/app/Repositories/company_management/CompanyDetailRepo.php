@@ -3,6 +3,7 @@
 namespace App\Repositories\company_management;
 
 use App\Models\company_management\CompanyDetail;
+use Illuminate\Support\Arr;
 
 class CompanyDetailRepo
 {
@@ -14,7 +15,15 @@ class CompanyDetailRepo
         //
     }
 
-    public function create($companyDetail){
+    public function create(array $companyDetail){
      return CompanyDetail::create($companyDetail);
+    }
+
+    public function checkMailExist($email){
+        return  CompanyDetail::where('email',trim($email))->exists();
+    }
+
+    public function getAllCompanyDetail(){
+        return CompanyDetail::where('delete_status',1)->get();
     }
 }

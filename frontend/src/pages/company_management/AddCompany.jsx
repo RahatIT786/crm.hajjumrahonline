@@ -15,19 +15,35 @@ import axios from "axios";
 
 // --☑✅---SCHEMA-FORM-VALIDATION-START-------------------------------
 const schema=yup.object().shape({
-    companyName: yup.string().required("Company Name is Required").max(40,"Company Name must below 40 character "),
-    companyDisplayName: yup.string().max(40,"Company Display Name must below 40 character ").required("Company Display Name is Required"),
-    contactPerson: yup.string().required("Contact Person is Required").max(30,"Name must below 30 character"),
-    mobileNumber: yup
+  company_name: yup.string().required("Company Name is Required").max(40,"Company Name must below 40 character "),
+    company_display_name: yup.string().max(40,"Company Display Name must below 40 character ").required("Company Display Name is Required"),
+    contact_person: yup.string().required("Contact Person is Required").max(30,"Name must below 30 character"),
+    mobile_number: yup
         .string()
         .required("Mobile Number is required")
         .matches(/^\d{10}$/, "Mobile number must be 10 digits"),
 
-    email: yup.string().email("Invalid Email Format").required("Email is required").max(40,'Email must below 40 character'),
+    email: yup.string().email("Invalid Email Format").required("Email is required").max(40,'Email must below 40 character') .test("email-exists", "Email already exists", async (value) => {
+      if (!value) return false;
+      try {
+        const token = sessionStorage.getItem("token");
+          const response = await axios.post("/api/check-email", { email: value },{
+            headers: {
+                Authorization: `Bearer ${token}`, // Send JWT token
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        console.log("response :",response)
+          return !response.data.exists; // If email exists, return false to show error
+      } catch (error) {
+          console.error("API error:", error);
+          return true; // If API fails, allow form submission
+      }
+    }),
     website: yup.string().url("Invalid URL format").optional(),
-    landlineNumber: yup.string().optional().max(20,"Landline number must below 20 digit"),
-    registeredAddress: yup.string().required("Address is required").max(60,'Address must below 60 character'),
-    aboutCompany : yup.string().optional().max(100,'About Company must below 100 character'),
+    landline_number: yup.string().optional().max(20,"Landline number must below 20 digit"),
+    registered_address: yup.string().required("Address is required").max(60,'Address must below 60 character'),
+    about_company : yup.string().optional().max(100,'About Company must below 100 character'),
     gst : yup.string().required('GST number required'),
     pan : yup.string().required('PAN number required'),
 
@@ -35,7 +51,7 @@ const schema=yup.object().shape({
     country: yup.string().required("Country is required").max(20,"Country must below 20 character"),
     state: yup.string().nullable().max(25,"State Name must be  25 character"),
     city: yup.string().optional().max(20,'City Name must below 20 character'),
-    companyLogo: yup.mixed().test("FileSize","File size must be less than 2MB",(value)=>{
+    company_logo: yup.mixed().test("FileSize","File size must be less than 2MB",(value)=>{
         return !value || (value && value[0] ?.size <=2 *1024 *1024);
     }),
     
@@ -63,7 +79,10 @@ const AddCompany = () => {
         register,
         handleSubmit,
         control,
+        setError,
+        clearErrors,
         formState:{errors},
+        
     }=useForm({
         resolver:yupResolver(schema),
         mode:"onChange",
@@ -91,14 +110,14 @@ const AddCompany = () => {
     // const [formData, setFormData] = useState({
     //     companyName: "",
     //     companyDisplayName: "",
-    //     contactPerson: "",
-    //     mobileNumber: "",
-    //     landlineNumber: "",
+    //     contact_person: "",
+    //     mobile_number: "",
+    //     landline_number: "",
     //     email: "",
     //     website: "",
-    //     registeredAddress: "",
-    //     aboutCompany: "",
-    //     companyLogo: "",
+    //     registered_address: "",
+    //     about_company: "",
+    //     company_logo: "",
     //     country: "",
     //     state: "",
     //     city: ""
@@ -119,6 +138,31 @@ const AddCompany = () => {
         console.log(data); 
 
         try {
+            
+          const formData = new FormData();
+          formData.append("company_name", data.company_name);
+          formData.append("company_display_name", data.company_display_name);
+          formData.append("contact_person", data.contact_person);
+          formData.append("mobile_number", data.mobile_number);
+          formData.append("email", data.email);
+          formData.append("website", data.website);
+          formData.append("landline_number", data.landline_number);
+          formData.append("registered_address", data.registered_address);
+          formData.append("about_company", data.about_company);
+          formData.append("gst", data.gst);
+          formData.append("pan", data.pan);
+          formData.append("country", data.country);
+          formData.append("state", data.state);
+          formData.append("city", data.city);
+
+          // Ensure file is appended correctly
+          if (data.company_logo[0]) {
+              formData.append("company_logo", data.company_logo[0]); // `company_logo[0]` gets the first selected file
+          }
+
+          console.log([...formData.entries()]); // Debugging - See what's inside FormData
+
+
             const token = sessionStorage.getItem("token"); // Retrieve JWT token
     
             if (!token) {
@@ -129,14 +173,21 @@ const AddCompany = () => {
             // Make API request to submit form data
             const response = await axios.post(
                 "api/addcompany",  // Update with your API endpoint
-                data,
+                formData,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`, // Send JWT token
-                        "Content-Type": "application/json",
+                        "Content-Type": "multipart/form-data",
                     },
                 }
             );
+
+            toast.success("Company Details Added Successfully..!",{   position: "top-right", // Customize position if needed
+            });
+            setTimeout(() => {
+                navigate("/company");
+              },3000);
+
         }catch (error) {
             console.error("Submission error:", error);
     
@@ -144,21 +195,10 @@ const AddCompany = () => {
             toast.error("Failed to add company details. Please try again.", { position: "top-right" });
         }
         
-        // Validation and submission logic here
-        // console.log(formData);
-        // const companies = JSON.parse(localStorage.getItem("companies")) || [];
-        // companies.push(formData);
-        // localStorage.setItem("companies", JSON.stringify(companies));
-        
-
-        toast.success("Company Details Added Successfully..!",{   position: "top-right", // Customize position if needed
-            });
-            setTimeout(() => {
-                navigate("/company");
-              },3000);
       
     };
     
+     
 
     return (
       <div className="container py-1">
@@ -180,30 +220,30 @@ const AddCompany = () => {
                     <div className="row my-3">
                       <div className="col-md-6 mt-2">
                         <InputBox
-                          {...register("companyName")}
+                          {...register("company_name")}
                           label="Company Name"
                           type="text"
-                          name="companyName"
+                          name="company_name"
                           placeholder="Enter Company Name"
                         />
-                        {errors.companyName && (
+                        {errors.company_name && (
                           <p className="text-danger">
-                            {errors.companyName.message}
+                            {errors.company_name.message}
                           </p>
                         )}
                         {/* <div className="invalid-feedback">{errors.companyName?.message}</div> */}
                       </div>
                       <div className="col-md-6 mt-2">
                         <InputBox
-                          {...register("companyDisplayName")}
+                          {...register("company_display_name")}
                           label="Company Display Name"
                           type="text"
-                          name="companyDisplayName"
+                          name="company_display_name"
                           placeholder="Enter Company Display Name"
                         />
-                        {errors.companyDisplayName && (
+                        {errors.company_display_name && (
                           <p className="text-danger">
-                            {errors.companyDisplayName.message}
+                            {errors.company_display_name.message}
                           </p>
                         )}
                       </div>
@@ -213,34 +253,34 @@ const AddCompany = () => {
                     <div className="row my-3">
                       <div className="col-md-6 mt-2">
                         <InputBox
-                          {...register("contactPerson")}
+                          {...register("contact_person")}
                           label="Contact Person"
                           type="text"
-                          name="contactPerson"
+                          name="contact_person"
                           placeholder="Enter Contact Person"
                         />
-                        {errors.contactPerson && (
+                        {errors.contact_person && (
                           <p className="text-danger">
-                            {errors.contactPerson.message}
+                            {errors.contact_person.message}
                           </p>
                         )}
                       </div>
                       <div className="col-md-6 mt-2">
                         <InputBox
-                          {...register("mobileNumber")}
+                          {...register("mobile_number")}
                           label="Mobile Number"
                           type="text"
-                          name="mobileNumber"
+                          name="mobile_number"
                           placeholder="Enter Mobile Number"
                         />
-                        {errors.mobileNumber && (
+                        {errors.mobile_number && (
                           <p className="text-danger">
-                            {errors.mobileNumber.message}
+                            {errors.mobile_number.message}
                           </p>
                         )}
 
                         <div className="invalid-feedback">
-                          {errors.mobileNumber?.message}
+                          {errors.mobile_number?.message}
                         </div>
                       </div>
                     </div>
@@ -249,15 +289,15 @@ const AddCompany = () => {
                     <div className="row my-3">
                       <div className="col-md-4 mt-2">
                         <InputBox
-                          {...register("landlineNumber")}
+                          {...register("landline_number")}
                           label="Landline Number"
                           type="text"
-                          name="landlineNumber"
+                          name="landline_number"
                           placeholder="Enter Landline Number"
                         />
-                        {errors.landlineNumber && (
+                        {errors.landline_number && (
                           <p className="text-danger">
-                            {errors.landlineNumber.message}
+                            {errors.landline_number.message}
                           </p>
                         )}
                       </div>
@@ -293,29 +333,29 @@ const AddCompany = () => {
                     <div className="row my-3">
                       <div className="col-md-6 mt-2">
                         <InputBox
-                          {...register("registeredAddress")}
+                          {...register("registered_address")}
                           label="Registered Address"
                           type="text"
-                          name="registeredAddress"
+                          name="registered_address"
                           placeholder="Enter Registered Address"
                         />
-                        {errors.registeredAddress && (
+                        {errors.registered_address && (
                           <p className="text-danger">
-                            {errors.registeredAddress.message}
+                            {errors.registered_address.message}
                           </p>
                         )}
                       </div>
                       <div className="col-md-6 mt-2">
                         <InputBox
-                          {...register("aboutCompany")}
+                          {...register("about_company")}
                           label="About Company"
                           type="text"
-                          name="aboutCompany"
+                          name="about_company"
                           placeholder="Enter About Company"
                         />
-                        {errors.aboutCompany && (
+                        {errors.about_company && (
                           <p className="text-danger">
-                            {errors.aboutCompany.message}
+                            {errors.about_company.message}
                           </p>
                         )}
                       </div>
@@ -402,7 +442,7 @@ const AddCompany = () => {
                         {/* <InputBox
                                                 label="Company Logo"
                                                 type="file"
-                                                name="companyLogo"
+                                                name="company_logo"
                                                 onChange={handleInputChange}
                                             /> */}
                         <label>Company Logo</label>
@@ -410,19 +450,19 @@ const AddCompany = () => {
                       {/* <FileUpload onChange={onFileChange}/> */}
                       </div>
                         <input
-                          {...register("companyLogo")}
+                          {...register("company_logo")}
                           onChange={(e) => {
                             onFileChange(e);
                           }}
                           type="file"
-                          name="companyLogo"
+                          name="company_logo"
                           className="form-control"
                           accept="image/*"
                            
                         />
-                        {errors.companyLogo && (
+                        {errors.company_logo && (
                           <p className="text-danger">
-                            {errors.companyLogo.message}
+                            {errors.company_logo.message}
                           </p>
                         )}
                         <div>

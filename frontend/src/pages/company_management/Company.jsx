@@ -5,92 +5,125 @@ import EditBtn from "../../components/ui/button/EditBtn";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCompanies } from "../../features/company_management/CompanyDetailSlice";
+
+
 const Company = () => {
   
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
 
+  
+
   useEffect(() => {
     // Load companies from localStorage
-    let savedCompanies = JSON.parse(localStorage.getItem("companies")) || [];
+    // let savedCompanies = JSON.parse(localStorage.getItem("companies")) || [];
 
-    // If no data exists, add dummy data
-    if (savedCompanies.length === 0) {
-      savedCompanies = [
-        {
-          companyName: "Company One",
-          companyDisplayName: "Company One Display",
-          contactPerson: "John Doe",
-          mobileNumber: "1234567890",
-          landlineNumber: "0987654321",
-          email: "john@example.com",
-          website: "https://companyone.com",
-          registeredAddress: "123 Main St.",
-          aboutCompany: "A brief description of Company One.",
-          companyLogo: "logo1.png",
-          country: "USA",
-          state: "California",
-          city: "Los Angeles",
-        },
-        {
-          companyName: "Company Two",
-          companyDisplayName: "Company Two Display",
-          contactPerson: "Jane Smith",
-          mobileNumber: "9876543210",
-          landlineNumber: "1122334455",
-          email: "jane@example.com",
-          website: "https://companytwo.com",
-          registeredAddress: "456 Second St.",
-          aboutCompany: "A brief description of Company Two.",
-          companyLogo: "logo2.png",
-          country: "UK",
-          state: "England",
-          city: "London",
-        },
-        {
-            companyName: "Company Two",
-            companyDisplayName: "Company Two Display",
-            contactPerson: "Jane Smith",
-            mobileNumber: "9876543210",
-            landlineNumber: "1122334455",
-            email: "jane@example.com",
-            website: "https://companytwo.com",
-            registeredAddress: "456 Second St.",
-            aboutCompany: "A brief description of Company Two.",
-            companyLogo: "logo2.png",
-            country: "UK",
-            state: "England",
-            city: "London",
-          },
-          {
-            companyName: "Company Two",
-            companyDisplayName: "Company Two Display",
-            contactPerson: "Jane Smith",
-            mobileNumber: "9876543210",
-            landlineNumber: "1122334455",
-            email: "jane@example.com",
-            website: "https://companytwo.com",
-            registeredAddress: "456 Second St.",
-            aboutCompany: "A brief description of Company Two.",
-            companyLogo: "logo2.png",
-            country: "UK",
-            state: "England",
-            city: "London",
-          },
+    // // If no data exists, add dummy data
+    // if (savedCompanies.length === 0) {
+    //   savedCompanies = [
+    //     {
+    //       companyName: "Company One",
+    //       companyDisplayName: "Company One Display",
+    //       contactPerson: "John Doe",
+    //       mobileNumber: "1234567890",
+    //       landlineNumber: "0987654321",
+    //       email: "john@example.com",
+    //       website: "https://companyone.com",
+    //       registeredAddress: "123 Main St.",
+    //       aboutCompany: "A brief description of Company One.",
+    //       companyLogo: "logo1.png",
+    //       country: "USA",
+    //       state: "California",
+    //       city: "Los Angeles",
+    //     },
+    //     {
+    //       companyName: "Company Two",
+    //       companyDisplayName: "Company Two Display",
+    //       contactPerson: "Jane Smith",
+    //       mobileNumber: "9876543210",
+    //       landlineNumber: "1122334455",
+    //       email: "jane@example.com",
+    //       website: "https://companytwo.com",
+    //       registeredAddress: "456 Second St.",
+    //       aboutCompany: "A brief description of Company Two.",
+    //       companyLogo: "logo2.png",
+    //       country: "UK",
+    //       state: "England",
+    //       city: "London",
+    //     },
+    //     {
+    //         companyName: "Company Two",
+    //         companyDisplayName: "Company Two Display",
+    //         contactPerson: "Jane Smith",
+    //         mobileNumber: "9876543210",
+    //         landlineNumber: "1122334455",
+    //         email: "jane@example.com",
+    //         website: "https://companytwo.com",
+    //         registeredAddress: "456 Second St.",
+    //         aboutCompany: "A brief description of Company Two.",
+    //         companyLogo: "logo2.png",
+    //         country: "UK",
+    //         state: "England",
+    //         city: "London",
+    //       },
+    //       {
+    //         companyName: "Company Two",
+    //         companyDisplayName: "Company Two Display",
+    //         contactPerson: "Jane Smith",
+    //         mobileNumber: "9876543210",
+    //         landlineNumber: "1122334455",
+    //         email: "jane@example.com",
+    //         website: "https://companytwo.com",
+    //         registeredAddress: "456 Second St.",
+    //         aboutCompany: "A brief description of Company Two.",
+    //         companyLogo: "logo2.png",
+    //         country: "UK",
+    //         state: "England",
+    //         city: "London",
+    //       },
       
-      ];
+    //   ];
 
-      // Store dummy data in localStorage
-      localStorage.setItem("companies", JSON.stringify(savedCompanies));
-    }
+    //   // Store dummy data in localStorage
+    //   localStorage.setItem("companies", JSON.stringify(savedCompanies));
+    // }
 
-    console.log("Saved Companies:", savedCompanies); // Debugging line
+    // console.log("Saved Companies:", savedCompanies); // Debugging line
 
-    setCompanies(savedCompanies);
+    // setCompanies(savedCompanies);
+
+    const  getCompanies=async()=>{
+      try{
+          const response =await axios.get('/api/getcompany');
+          setCompanies(response.data.companyDetails);
+          console.log("your response is : ",response.data.companyDetails);
+      }catch(error){
+          console.error("Error fetching companies: ",error);
+          
+      }
+  };
+
+  getCompanies();
   }, []);
 
-
-
+  // const dispatch=useDispatch();
+  // const{data:companies,status,error}=useSelector((state)=>state.companyDetail);
+  // useEffect(()=>{
+  //   if(status==='idle'){
+  //     dispatch(fetchCompanies()); // Only fetch if not already fetched
+  //   }
+  // },[dispatch,status]);
+  
+  // if(status==='loading'){
+  //   return <div>Loading...</div>
+  // }
+  // if(status==='failed'){
+  //   return <div>Error: {error}</div>
+  // }
+  
 
 
   const handleDeleteCompany = (index) => {
@@ -104,11 +137,11 @@ const Company = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedCompanies = companies.filter((_, i) => i !== index);
+        // const updatedCompanies = companies.filter((_, i) => i !== index);
 
         // Update state and localStorage
-        setCompanies(updatedCompanies);
-        localStorage.setItem("companies", JSON.stringify(updatedCompanies));
+        // setCompanies(updatedCompanies);
+        // localStorage.setItem("companies", JSON.stringify(updatedCompanies));
         Swal.fire("Deleted!", "The company has been deleted.", "success");
       }
     });
@@ -141,10 +174,10 @@ const Company = () => {
                 companies.map((company, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{company.companyName}</td>
-                    <td>{company.companyDisplayName}</td>
-                    <td>{company.contactPerson}</td>
-                    <td>{company.mobileNumber}</td>
+                    <td>{company.company_name}</td>
+                    <td>{company.company_display_name}</td>
+                    <td>{company.contact_person}</td>
+                    <td>{company.mobile_number}</td>
                     <td>
                       <a href={company.website} target="_blank" rel="noopener noreferrer">
                         {company.website}
