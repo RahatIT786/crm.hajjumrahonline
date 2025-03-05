@@ -12,7 +12,7 @@ class RoleRepo
      * Create a new class instance.
      */
     public function createRole(array $data){
-        return Role::create($data );
+        return Role::create($data);
     }
 
 

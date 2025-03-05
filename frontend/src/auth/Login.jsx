@@ -70,8 +70,8 @@ const Login = () => {
       sessionStorage.setItem("token", data.token);
       console.log('✅ Your token is:', data.token);
 
-        // Set Authorization header for future requests
-    axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+      // Set Authorization header for future requests
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
 
       navigate("/dashboard");
