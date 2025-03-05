@@ -22,15 +22,18 @@ const FileUpload = ({
   multiple = true,
   width = "auto",
   height = "40px",
+  register,
+  name,
 }) => {
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (onChange) {
-      onChange(files); // Pass selected files to parent component
+    const file = event.target.files; // ✅ Ensure a single file is selected
+    if (file) {
+      onChange(file); // ✅ Pass file instead of file list
     } else {
-      console.log(files); // Fallback if no onChange handler is passed
+      console.log("No file selected"); // Debugging message
     }
   };
+  
 
   return (
     <Button
@@ -47,6 +50,7 @@ const FileUpload = ({
       <VisuallyHiddenInput
         type="file"
         onChange={handleFileChange}
+        name={name}
         accept={accept}
         multiple={multiple}
       />
