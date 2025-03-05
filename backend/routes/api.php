@@ -23,7 +23,10 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/profile',[AuthController::class,'testProfile']);
 
     Route::post('/staff',[StaffController::class, 'createStaff']);
-
+    Route::get('/get-staff',[StaffController::class, 'getStaff']);
+    Route::put('/staff/{id}/delete', [StaffController::class, 'deleteStaff']);
+    Route::get('/get-staff-details/{id}', [StaffController::class, 'getStaffById']);
+    Route::put('/staff-update/{id}', [StaffController::class, 'staffUpdate']);
     // Route::post('/staff',function(Request $request){
     //         //dd($request->all());
     //         // Log::info('Received API Data:', ['data' => $request->all()]);

@@ -18,7 +18,7 @@ import Role from '../pages/staff_management/Role'
 import Department from '../pages/staff_management/Department'
 import StaffList from '../pages/staff_management/StaffList'
 import AddStaff from '../pages/staff_management/AddStaff'
-
+import EditStaff from '../pages/staff_management/EditStaff'
 
 //PNR Management
 import PnrList from '../pages/pnr_management/PnrList'
@@ -80,6 +80,7 @@ const AppRoutes = () => {
                 <Route path='/staff_management/department' element={<Department />}/>
                 <Route path='/staff_management/staff_list' element={<StaffList />}/>
                 <Route path='/staff_management/staff_add' element={<AddStaff />}/>
+                <Route path='/staff_management/staff_edit/:id' element={<EditStaff />} />
 
                 {/* Inventory Management */}
                 <Route path="/inventory_management/packages" element={<PackageComponent />} />
