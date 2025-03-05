@@ -17,4 +17,8 @@ class StaffService
     public function createStaff(array $data){
         return $this->staffRepo->createStaff($data);
     }
+
+    public function getStaff(){
+        return $this->staffRepo->getStaff();
+    }
 }

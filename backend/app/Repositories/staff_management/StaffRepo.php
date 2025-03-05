@@ -25,6 +25,10 @@ class StaffRepo
                 'message' => 'Something went wrong. Please try again.',
             ], 500);
         }
-       
+    }
+
+    public function getStaff(){
+        $staff = Staff::where('delete_status', 1)->get();
+        return response()->json($staff);
     }
 }
